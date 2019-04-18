@@ -1,0 +1,242 @@
+package boundedqueue;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import org.junit.Test;
+
+@SuppressWarnings("javadoc")
+public class OffsetCircArrayQueueTest
+{
+
+    private Queue<String> createEXYZ6()
+    {
+        Queue<String> result = new CircArrayQueue<>(6);
+
+        result.enqueue("A");
+        result.enqueue("B");
+        result.enqueue("C");
+        result.enqueue("D");
+        result.enqueue("E");
+        result.dequeue();
+        result.dequeue();
+        result.enqueue("X");
+        result.enqueue("Y");
+        result.enqueue("Z");
+        result.dequeue();
+        result.dequeue();
+
+        return result;
+    }
+
+
+    private Queue<String> createPQ3()
+    {
+        Queue<String> result = new CircArrayQueue<>(3);
+
+        result.enqueue("A");
+        result.enqueue("B");
+        result.enqueue("P");
+        result.dequeue();
+        result.enqueue("Q");
+        result.dequeue();
+
+        return result;
+    }
+
+
+    @Test
+    public void testEXYZ6Build()
+    {
+        Queue<String> q = new CircArrayQueue<>(6);
+        q.enqueue("A");
+        assertEquals(1, q.length());
+        q.enqueue("B");
+        assertEquals(2, q.length());
+        q.enqueue("C");
+        assertEquals(3, q.length());
+        q.enqueue("D");
+        assertEquals(4, q.length());
+        q.enqueue("E");
+        assertEquals(5, q.length());
+        q.dequeue();
+        assertEquals(4, q.length());
+        q.dequeue();
+        assertEquals(3, q.length());
+        q.enqueue("X");
+        assertEquals(4, q.length());
+        q.enqueue("Y");
+        assertEquals(5, q.length());
+        q.enqueue("Z");
+        assertEquals(6, q.length());
+        q.dequeue();
+        assertEquals(5, q.length());
+        q.dequeue();
+        assertEquals(4, q.length());
+    }
+
+
+    @Test
+    public void testPQ3Build()
+    {
+        Queue<String> q = new CircArrayQueue<>(3);
+        String e;
+        assertEquals(0, q.length());
+        q.enqueue("A");
+        assertEquals(1, q.length());
+        q.enqueue("B");
+        assertEquals(2, q.length());
+        q.enqueue("P");
+        assertEquals(3, q.length());
+        q.dequeue();
+        assertEquals(2, q.length());
+        q.enqueue("Q");
+        assertEquals(3, q.length());
+        q.dequeue();
+        assertEquals(2, q.length());
+    }
+
+
+    @Test
+    public void testEXYZ6Elements()
+    {
+        Queue<String> q = createEXYZ6();
+        String e;
+        assertEquals(4, q.length());
+
+        e = q.dequeue();
+        assertEquals("E", e);
+        assertEquals(3, q.length());
+
+        e = q.dequeue();
+        assertEquals("X", e);
+        assertEquals(2, q.length());
+
+        e = q.dequeue();
+        assertEquals("Y", e);
+        assertEquals(1, q.length());
+
+        e = q.dequeue();
+        assertEquals("Z", e);
+        assertEquals(0, q.length());
+    }
+
+
+    @Test
+    public void testPQ3Elements()
+    {
+        Queue<String> q = createPQ3();
+        String e;
+        assertEquals(2, q.length());
+
+        e = q.dequeue();
+        assertEquals("P", e);
+        assertEquals(1, q.length());
+
+        e = q.dequeue(); 
+        assertEquals("Q", e);
+        assertEquals(0, q.length());
+    }
+
+
+    @Test
+    public void testPQ3Iterator()
+    {
+        Queue<String> q = createPQ3();
+        Iterator<String> i = q.iterator();
+        String result = "";
+        while (i.hasNext())
+        {
+            String s = i.next();
+            result += s;
+        }
+        assertEquals("PQ", result);
+        assertEquals(2, q.length());
+    }
+
+
+    @Test
+    public void testEXYZ6ForEach()
+    {
+        Queue<String> q = createEXYZ6();
+        String result = "";
+        for (String s : q)
+        {
+            result += s;
+        }
+        assertEquals("EXYZ", result);
+        assertEquals(4, q.length());
+    }
+
+
+    @Test
+    public void testPQ3ToString()
+    {
+        Queue<String> q = createPQ3();
+        assertEquals("[P, Q]:3", q.toString());
+    }
+
+
+    @Test
+    public void testEXYZ6EqualsEXYZ6Alt()
+    {
+        Queue<String> q = createEXYZ6();
+        Queue<String> p = new CircArrayQueue<>(6);
+        p.enqueue("E");
+        p.enqueue("X");
+        p.enqueue("Y");
+        p.enqueue("Z");
+        assertEquals(p, q);
+    }
+
+
+    @Test
+    public void testEXYZ6HashEqualsEXYZ6AltHash()
+    {
+        Queue<String> q = createEXYZ6();
+        Queue<String> p = new CircArrayQueue<>(6);
+        p.enqueue("E");
+        p.enqueue("X");
+        p.enqueue("Y");
+        p.enqueue("Z");
+        assertEquals(p.hashCode(), q.hashCode());
+    }
+
+
+    @Test
+    public void testEXYZ6Copy()
+    {
+        Queue<String> q = createEXYZ6();
+        Queue<String> p = q.copy();
+        assertEquals(4, p.length());
+    }
+
+
+    @Test
+    public void testEXYZ6AppendPQ3()
+    {
+        Queue<String> q = createEXYZ6();
+        Queue<String> p = createPQ3();
+        q.append(p);
+        assertEquals(6, q.length());
+        assertEquals(0, p.length());
+    }
+
+
+    @Test(expected = NoSuchElementException.class)
+    public void testABC6NoSuchElement()
+    {
+        Queue<String> q = new CircArrayQueue<>(6);
+        q.enqueue("A");
+        q.enqueue("B");
+        q.enqueue("C");
+        Iterator<String> i = q.iterator();
+        while (i.hasNext())
+        {
+            String s = i.next();
+        }
+        String doesNotExist = i.next();
+        fail();
+    }
+}
