@@ -1,0 +1,315 @@
+package boundedqueue;
+
+import java.util.Iterator;
+
+/**
+ * <p>
+ * An ordered list of objects, last-in first-out data structure. Elements in this queue may not be
+ * null.
+ * </p>
+ * <p>
+ * A typical string representation of a queue is <code>[e_0, e_1, ..., e_n-1, e_n]:c</code> where
+ * <code>e_0</code> is the first element of the queue and <code>e_n</code> is the last element, and
+ * <code>c</code> is the capacity.
+ * </p>
+ * <p>
+ * Implementations of this interface should have a one-argument constructor that takes the desired
+ * capacity and creates an empty queue. The capacity must be strictly greater than zero.
+ * </p>
+ * <p>
+ * <code>public Queue(int max)</code>
+ * </p>
+ * <p>
+ * A queue iterator iterates through the queue from first to last.
+ * </p>
+ * 
+ * @author sugie
+ * @version Feb 25, 2019
+ * @param <E>
+ */
+public interface Queue<E>
+    extends Iterable<E>
+{
+    /**
+     * <p>
+     * Adds the specified element onto to the front of this queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s = [A, B, C]:6</code> <em>and</em> <code>x = X</code> }<br>
+     * <code>s.enqueue(x)</code><br>
+     * { <code>s = [A, B, C, X]:6</code> <em>and<em> <code>x = X</code> }<br>
+     * </p>
+     * 
+     * @param element
+     *            the element to be pushed onto this queue
+     * @throws IllegalArgumentException
+     *             if the specified element is null
+     * @throws IllegalStateException
+     *             if this queue is full
+     */
+    public void enqueue(E element)
+        throws IllegalStateException,
+        IllegalArgumentException;
+
+
+    /**
+     * <p>
+     * Removes and returns the first element from this queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s = [A, B, C]:6</code> }<br>
+     * <code>s.dequeue()</code><br>
+     * { <code>s = [A, B]:6</code> }<br>
+     * </p>
+     * 
+     * @return the top element from this queue
+     * @throws IllegalStateException
+     *             if this queue is empty
+     */
+    public E dequeue()
+        throws IllegalStateException;
+
+
+    /**
+     * <p>
+     * Returns the number of elements in this queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <code>n = s.length()</code><br>
+     * { <code>s = [A, B, C]:6</code> <em>and</em> <code>n = 3</code> }<br>
+     * </p>
+     * 
+     * @return the number of elements in this queue
+     */
+    public int length();
+
+
+    /**
+     * <p>
+     * Returns the number of elements that this queue can hold.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <code>n = s.capacity()</code><br>
+     * { <code>s = [A, B, C]:6</code> <em>and</em> <code>n = 6</code> }<br>
+     * </p>
+     * 
+     * @return the number of elements that this queue can hold
+     */
+    public int capacity();
+
+
+    /**
+     * <p>
+     * Returns a new empty queue with the same capacity as this queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <code>n = s.newInstance()</code><br>
+     * { <code>n = []:6</code> }<br>
+     * </p>
+     * 
+     * @return a new empty queue with the same capacity as this queue
+     */
+    public Queue<E> newInstance();
+
+
+    /**
+     * <p>
+     * Clears this queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <code>n = s.clear()</code><br>
+     * { <code>s = []:6</code> }<br>
+     * </p>
+     */
+    public void clear();
+
+
+    /**
+     * <p>
+     * Iterates through elements of the queue from first to last.
+     * </p>
+     * 
+     * @return an iteration through elements of the queue from first to last
+     */
+    public Iterator<E> iterator();
+
+
+    /**
+     * <p>
+     * Returns true if this queue is empty.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - []:6</code> }<br>
+     * <br>
+     * {<code>n = s.isEmpty()<code>}<br>
+     * * <br>
+     * return true<br>
+     * </p>
+     * 
+     * @return true if the queue is empty
+     */
+    public boolean isEmpty();
+
+
+    /**
+     * <p>
+     * Returns true if this queue is full.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C, D, E, F]:6</code> }<br>
+     * <br>
+     * {<code>n = s.isFull()<code>}<br>
+     * * <br>
+     * return true<br>
+     * </p>
+     * 
+     * @return true if the queue is full
+     */
+    public boolean isFull();
+
+
+    /**
+     * <p>
+     * Returns an appended queue that is recursive.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <em>and</em> <br>
+     * { <code>s - q2 = [D, E, F]:6</code>}<br>
+     * <br>
+     * {<code>n = q1.append(q2)<code>}<br>
+     * <br>q1 = [A, B, C, D, E, F]:6</code> }<br>
+     * <em>and</em> <br>
+     * { <code>s - q2 = [ ]:6</code> }<br>
+     * </p>
+     * 
+     * @param that
+     *            is the other queue to be added to this
+     * @throws IllegalArgumentException
+     *             if that queue is null
+     * @throws IllegalArgumentException
+     *             if this length is zero
+     * @throws IllegalStateException
+     *             if the capacity minus length is less than that length
+     */
+    public void append(Queue<E> that)
+        throws IllegalStateException,
+        IllegalArgumentException;
+
+
+    /**
+     * <p>
+     * Returns a copy of this queue. The elements in the copy are references to the elements in this
+     * queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <code>n = s.copy()</code><br>
+     * { <code>s = [A, B, C]:6</code> }<br>
+     * </p>
+     * 
+     * @return a copy of this queue
+     */
+    public Queue<E> copy();
+
+
+    /**
+     * <p>
+     * Returns true if two specified arrays of objects are equal to one another. The two arrays are
+     * considered equal if both arrays contain the same number of elements, and all corresponding
+     * pairs of elements in the two arrays are equal.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <em>and</em> <br>
+     * { <code>s - q2 = [A, B, C]:6</code>}<br>
+     * <br>
+     * {<code>n = q1.equals(q2)<code>}<br>
+     * * <br>
+     * return true<br>
+     * </p>
+     * 
+     * @param o
+     *            that is the queue to be compared to this
+     * @return true if this queue equals that queue
+     */
+    public boolean equals(Object o);
+
+
+    /**
+     * <p>
+     * Returns a hash code based on the contents of the specified queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - [A, B, C]:6</code> }<br>
+     * <code>n = s.hashcode()</code><br>
+     * { <code>s = 5164314</code> }<br>
+     * </p>
+     * 
+     * @return a content-based hash code for the queue
+     */
+    public int hashCode();
+
+
+    /**
+     * <p>
+     * Returns a string representation of the contents of the specified int array. The string
+     * representation consists of a list of the array's elements, enclosed in square brackets
+     * ("[]"). Adjacent elements are separated by the characters ", ".
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s - queue</code> }<br>
+     * <code>n = s.toString()</code><br>
+     * { <code>s = [A, B, C]:6</code> }<br>
+     * </p>
+     * 
+     * @return a string representation of the object
+     */
+    public String toString();
+
+
+    /**
+     * <p>
+     * Adds the specified elements onto to the front of this queue.
+     * </p>
+     * <p>
+     * Example:<br>
+     * { <code>s = [A, B, C]:6</code> <em>and</em>
+     * <code>x = X</code><code>y =Y</code><code>z = Z</code> }<br>
+     * <code>s.enqueueMultiple(x, y, z)</code><br>
+     * { <code>s = [A, B, C, X, Y, Z]:6</code> <em>and<em>
+     * <code>x = X</code><code>y =Y</code><code>z = Z</code> }<br>
+     * </p>
+     * 
+     * @param elements
+     *            the elements to be enqueued onto this queue
+     * @throws IllegalArgumentException
+     *             if the specified element is null
+     * @throws IllegalArgumentException
+     *             if the specified element length is zero
+     * @throws IllegalStateException
+     *             if this queue is full
+     */
+    @SuppressWarnings("unchecked")
+    public void enqueueMultiple(E... elements)
+        throws IllegalStateException,
+        IllegalArgumentException;
+
+}
