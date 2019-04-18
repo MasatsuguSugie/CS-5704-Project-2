@@ -1,0 +1,183 @@
+package boundedqueue;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+/**
+ * <p>
+ * This class is the CircArrayQueue class, it extends the AbstractQueue class. This is tested with
+ * the CircArrayQueue class.
+ * </p>
+ * <p>
+ * Implementations of this class should have a one-argument constructor that takes the desired
+ * capacity and creates an empty queue. The capacity must be strictly greater than zero.
+ * </p>
+ * 
+ * @author sugie
+ * @version Feb 25, 2019
+ * @param <E>
+ */
+public class CircArrayQueue<E>
+    extends AbstractQueue<E>
+{
+    private E[] contents;
+    private int first;
+    private int length;
+
+
+    /**
+     * <p>
+     * Create a new CircArrayQueue object.
+     * </p>
+     * 
+     * @param max
+     *            capacity of the bounded queue
+     * @throws IllegalArgumentException
+     *             if capacity is less than one
+     */
+    @SuppressWarnings("unchecked")
+    public CircArrayQueue(int max)
+        throws IllegalArgumentException
+    {
+        super(max);
+        if (max < 1)
+        {
+            throw new IllegalArgumentException();
+        }
+        contents = (E[])new Object[max];
+        first = 0;
+        length = 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void enqueue(E element)
+        throws IllegalStateException,
+        IllegalArgumentException
+    {
+        if (element == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        if (isFull())
+        {
+            throw new IllegalStateException();
+        }
+        if (isEmpty())
+        {
+            contents[first] = element;
+        }
+        contents[(first + length) % capacity] = element;
+        length++;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E dequeue()
+    {
+        if (isEmpty())
+        {
+            throw new IllegalStateException();
+        }
+        E front = contents[first];
+        first = (first + 1) % capacity;
+        length--;
+        return front;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int length()
+    {
+        return length;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Queue<E> newInstance()
+    {
+        return new CircArrayQueue<>(capacity());
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        length = 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterator<E> iterator()
+    {
+        return new QueueIterator();
+    }
+
+
+    /**
+     * <p>
+     * This is the Iterator helper inner class.
+     * </p>
+     */
+    private class QueueIterator
+        implements Iterator<E>
+    {
+
+        private int currentIndex = 0;
+
+
+        /**
+         * <p>
+         * This boolean returns true if the current index is not past length.
+         * </p>
+         */
+        @Override
+        public boolean hasNext()
+        {
+            return currentIndex != length;
+        }
+
+
+        /**
+         * <p>
+         * This method sets the next element in the iterator.
+         * </p>
+         * 
+         * @throws NoSuchElementException
+         *             if hasNext is false
+         */
+        @Override
+        public E next()
+            throws NoSuchElementException
+        {
+            if (!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+            E result = contents[(first + currentIndex) % capacity];
+            currentIndex++;
+            return result;
+        }
+
+    }
+
+}
