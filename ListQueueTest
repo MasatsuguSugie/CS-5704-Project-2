@@ -1,0 +1,525 @@
+package boundedqueue;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * <p>
+ * This class is the ListQueueTest class. This tests the ListQueue class.
+ * </p>
+ * 
+ * @author sugie
+ * @version Feb 25, 2019
+ */
+public class ListQueueTest
+{
+
+    private Queue<String> queueEmpty_3;
+    private Queue<String> queue_ABC_3;
+    private Queue<String> queue_ABC_6;
+
+
+    /**
+     * Place a description of your method here.
+     * 
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        queueEmpty_3 = new ListQueue<>(3);
+        queue_ABC_3 = new ListQueue<>(3);
+        queue_ABC_3.enqueue("A");
+        queue_ABC_3.enqueue("B");
+        queue_ABC_3.enqueue("C");
+        queue_ABC_6 = new ListQueue<>(6);
+        queue_ABC_6.enqueue("A");
+        queue_ABC_6.enqueue("B");
+        queue_ABC_6.enqueue("C");
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmptyQueueLength()
+    {
+        assertEquals(0, queueEmpty_3.length());
+    }
+
+
+    /**
+     * Test if the enqueue method is adding a String.
+     */
+    @Test
+    public void testEmptyEnqueueA()
+    {
+        queueEmpty_3.enqueue("A");
+        queueEmpty_3.enqueue("B");
+        String s = queueEmpty_3.dequeue();
+        assertEquals("A", s);
+        assertEquals(1, queueEmpty_3.length());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6Iterator()
+    {
+        String result = "";
+        for (String s : queue_ABC_6)
+        {
+            result += s;
+        }
+        assertEquals("ABC", result);
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmptyToString()
+    {
+        assertEquals("[]:3", queueEmpty_3.toString());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABCToString()
+    {
+        assertEquals("[A, B, C]:6", queue_ABC_6.toString());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmptyNewInstance()
+    {
+        Queue<String> newStack = queueEmpty_3.newInstance();
+        assertEquals(0, newStack.length());
+        assertEquals(3, newStack.capacity());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABCNewInstance()
+    {
+        Queue<String> newStack = queue_ABC_6.newInstance();
+        assertEquals(0, newStack.length());
+        assertEquals(6, newStack.capacity());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testClear()
+    {
+        queue_ABC_6.clear();
+        assertEquals(queue_ABC_6.length(), 0);
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsNull()
+    {
+        Queue<String> s = null;
+
+        assertFalse(queueEmpty_3.equals(s));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsSelf()
+    {
+        assertTrue(queue_ABC_6.equals(queue_ABC_6));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsNonQueue()
+    {
+        assertFalse(queue_ABC_6.equals("[A, B, C]:6"));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsDifferentABC6()
+    {
+        Queue<String> queue_ABC_6_dup = new ListQueue<>(6);
+        queue_ABC_6_dup.enqueue("A");
+        queue_ABC_6_dup.enqueue("B");
+        queue_ABC_6_dup.enqueue("C");
+
+        assertTrue(queue_ABC_6.equals(queue_ABC_6_dup));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsABC10()
+    {
+        Queue<String> queue_ABC_10 = new ListQueue<>(10);
+        queue_ABC_10.enqueue("A");
+        queue_ABC_10.enqueue("B");
+        queue_ABC_10.enqueue("C");
+
+        assertFalse(queue_ABC_6.equals(queue_ABC_10));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsAB6()
+    {
+        Queue<String> queue_AB_6 = new ListQueue<>(6);
+        queue_AB_6.enqueue("A");
+        queue_AB_6.enqueue("B");
+
+        assertFalse(queue_ABC_6.equals(queue_AB_6));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmpty3EqualsDifferentEmpty3()
+    {
+        Queue<String> queue_empty_3_dup = new ListQueue<>(3);
+
+        assertTrue(queueEmpty_3.equals(queue_empty_3_dup));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmpty3EqualsDifferentEmpty5()
+    {
+        Queue<String> queue_empty_5 = new ListQueue<>(5);
+
+        assertFalse(queueEmpty_3.equals(queue_empty_5));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABC6EqualsDEF6()
+    {
+        Queue<String> queue_DEF_6 = new ListQueue<>(6);
+        queue_DEF_6.enqueue("D");
+        queue_DEF_6.enqueue("E");
+        queue_DEF_6.enqueue("F");
+
+        assertFalse(queue_ABC_6.equals(queue_DEF_6));
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmptyCopy()
+    {
+        Queue<String> copy = queueEmpty_3.copy();
+        assertEquals(0, copy.length());
+        assertEquals(3, copy.capacity());
+        assertEquals(queueEmpty_3, copy);
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testABCCopy()
+    {
+        Queue<String> copy = queue_ABC_6.copy();
+        assertEquals(3, copy.length());
+        assertEquals(6, copy.capacity());
+        assertEquals(queue_ABC_6, copy);
+        String s1 = queue_ABC_6.dequeue();
+        String s1_copy = copy.dequeue();
+        assertTrue(s1 == s1_copy);
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testHashCodeABC6EqualsAB6()
+    {
+        Queue<String> queue_AB_6 = new ListQueue<>(10);
+        queue_AB_6.enqueue("A");
+        queue_AB_6.enqueue("B");
+
+        assertFalse(queue_ABC_6.hashCode() == queue_AB_6.hashCode());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testHashCodeABC6AndDifferentABC6()
+    {
+        Queue<String> queue_ABC_6_dup = new ListQueue<>(6);
+        queue_ABC_6_dup.enqueue("A");
+        queue_ABC_6_dup.enqueue("B");
+        queue_ABC_6_dup.enqueue("C");
+
+        assertTrue(queue_ABC_6.hashCode() == queue_ABC_6_dup.hashCode());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testContentsLessThanOne()
+    {
+        Queue<String> queue_0 = new ListQueue<>(0);
+        assertEquals(0, queue_0.capacity());
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testDenqueueUntilLessThanOne()
+    {
+        Queue<String> queue_A_1 = new ListQueue<>(1);
+        queue_A_1.enqueue("A");
+        queue_A_1.dequeue();
+        assertTrue(queue_A_1.isEmpty());
+        queue_A_1.dequeue();
+        fail();
+
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testContentsEnqueueOverLengthLimit()
+    {
+        Queue<String> queue_Over_Length_ABC_3 = new ListQueue<>(3);
+        queue_Over_Length_ABC_3.enqueue("A");
+        queue_Over_Length_ABC_3.enqueue("B");
+        queue_Over_Length_ABC_3.enqueue("C");
+        queue_Over_Length_ABC_3.enqueue("D");
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testEnqueueNull()
+    {
+        Queue<String> queue_null_1 = new ListQueue<>(1);
+        queue_null_1.enqueue(null);
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEnqueueMultipleElements()
+    {
+        Queue<String> queue_Multi_Elem_ABC_3 = new ListQueue<>(3);
+        queue_Multi_Elem_ABC_3.enqueueMultiple("A", "B", "C");
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testEnqueueMultipleElementsFail()
+    {
+        Queue<String> queue_Multi_Elem_Fail_ABC_3 = new ListQueue<>(3);
+        queue_Multi_Elem_Fail_ABC_3.enqueueMultiple("A", "B", "C");
+        queue_Multi_Elem_Fail_ABC_3.enqueueMultiple("D", "E");
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testEnqueueMultipleElementsNullFail()
+    {
+        Queue<String> queue_Multi_Elem_Null_3 = new ListQueue<>(3);
+        queue_Multi_Elem_Null_3.enqueueMultiple(null);
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testListQueueAppend()
+    {
+        Queue<String> queue_DEF_3 = new ListQueue<>(3);
+        queue_DEF_3.enqueue("D");
+        queue_DEF_3.enqueue("E");
+        queue_DEF_3.enqueue("F");
+        queue_ABC_6.append(queue_DEF_3);
+        assertEquals(queue_ABC_6.length(), 6);
+        assertEquals("[A, B, C, D, E, F]:6", queue_ABC_6.toString());
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testAppendThatMoreThanThis()
+    {
+        Queue<String> queue_DE_2 = new ListQueue<>(2);
+        queue_DE_2.enqueue("D");
+        queue_DE_2.enqueue("E");
+        assertEquals(queue_DE_2.length(), 2);
+        queue_ABC_3.append(queue_DE_2);
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatLengthZero()
+    {
+        queue_ABC_6.append(queueEmpty_3);
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyEnqueueMultipleNothing()
+    {
+        queueEmpty_3.enqueueMultiple();
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyAppendNull()
+    {
+        queueEmpty_3.append(null);
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testABCAppendDEFG()
+    {
+        Queue<String> queue_DEFG_2 = new ListQueue<>(4);
+        queue_DEFG_2.enqueue("D");
+        queue_DEFG_2.enqueue("E");
+        queue_DEFG_2.enqueue("F");
+        queue_DEFG_2.enqueue("G");
+        assertEquals(4, queue_DEFG_2.length());
+        queue_ABC_6.append(queue_DEFG_2);
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testOverCapacity()
+    {
+        assertEquals(3, queue_ABC_3.length());
+        queue_ABC_3.enqueue("D");
+        fail();
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testEmptyAppendABC()
+    {
+        queueEmpty_3.append(queue_ABC_3);
+    }
+
+
+    /**
+     * Place a description of your method here.
+     */
+    @Test
+    public void testDrKAdvise()
+    {
+        queueEmpty_3.enqueue("A");
+        queueEmpty_3.enqueue("B");
+        queueEmpty_3.enqueue("C");
+        String s = queueEmpty_3.dequeue();
+        assertEquals("A", s);
+        assertEquals(2, queueEmpty_3.length());
+        String t = queueEmpty_3.dequeue();
+        assertEquals("B", t);
+        assertEquals(1, queueEmpty_3.length());
+        String u = queueEmpty_3.dequeue();
+        assertEquals("C", u);
+        assertEquals(0, queueEmpty_3.length());
+    }
+
+}
