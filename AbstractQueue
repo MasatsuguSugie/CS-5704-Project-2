@@ -82,19 +82,25 @@ public abstract class AbstractQueue<E>
         {
             throw new IllegalArgumentException();
         }
-        if (that.length() == 0)
+        // if (that.length() == 0)
+// {
+// throw new IllegalArgumentException();
+// }
+// if (capacity - length() < that.length())
+// {
+// throw new IllegalStateException();
+// }
+        if (that.length() != 0)
         {
-            throw new IllegalArgumentException();
+            E elements = that.dequeue();
+            this.enqueue(elements);
+            this.append(that);
         }
-        if (capacity - length() < that.length())
-        {
-            throw new IllegalStateException();
-        }
-        while (!isFull())
-        {
-            E element = that.dequeue();
-            this.enqueue(element);
-        }
+// while (!isFull())
+// {
+// E element = that.dequeue();
+// this.enqueue(element);
+// }
 
     }
 
